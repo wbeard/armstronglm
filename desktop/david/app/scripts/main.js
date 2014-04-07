@@ -11,6 +11,7 @@ BedPlanner = {
   calculateSquareYards: function() {
     return this.area / 9;
   },
+
   set: function(key, val) {
     this[key] = val;
 
@@ -35,7 +36,6 @@ BedPlanner = {
   }
 
 };
-
 
 BedPlannerController = {
   init: function() {
@@ -68,35 +68,27 @@ BedPlannerController = {
       selector: '#inputBedArea',
       evt: 'change',
       fn: function(evt) {
-
         $("#inputBedLength, #inputBedWidth").val('');
-
       }
     },
     {
       selector: '#inputBedLength, #inputBedWidth',
       evt: 'change',
       fn: function(evt) {
-
         $("#inputBedArea").val('');
-
       }
     },
     {
       selector: '#mulchCubicFeetOtherValue',
       evt: 'click',
       fn: function(evt) {
-
         $("#mulchCubicFeetOther").trigger("click");
-
       }
     }
   ]
 };
 
-
 BedPlannerController.init();
-
 
 function roundUp(val) {
   if(val - parseInt(val) > 0) {
