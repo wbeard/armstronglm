@@ -1,0 +1,167 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>david</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+
+    <div class="container" style="background-color: #fff; background-color: rgba(255,255,255,0.8); padding-right: 25px; padding-left: 25px;">
+      <div class="form-horizontal">
+        <div class="row">
+          <h4>What is the the area of your bed?</h4>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-xs-12" style="border-right: 1px solid #ccc;">
+            <div class="form-group">
+              <label for="inputBedLength" class="col-sm-4 control-label">Bed length</label>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" data-controller-attr="length" class="form-control recalc" id="inputBedLength" />
+                  <span class="input-group-addon">ft.</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputBedLength" class="col-sm-4 control-label">Bed width</label>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" data-controller-attr="width" class="form-control recalc" id="inputBedWidth" />
+                  <span class="input-group-addon">ft.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+            <div class="form-group">
+              <label for="inputBedArea" class="col-sm-4 control-label">Bed area</label>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input type="text" data-controller-attr="area" class="form-control recalc" id="inputBedArea" />
+                  <span class="input-group-addon">ft<sup>2</sup></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h4>What's the condition of your bed?</h4>
+          <small class="help-block">This helps us determine the depth of the mulch</small>
+        </div>
+        <div class="row">
+          <div class="form-group">
+              <div class="col-sm-12">
+                <div class="radio">
+                  <label>
+                    <input type="radio" data-controller-attr="depth" class="recalc" name="mulchDepth" id="newBed" value="3">
+                    It's new.
+                  </label>
+                  <p class="help-block">3 inches</p>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" data-controller-attr="depth" class="recalc" name="mulchDepth" id="existingBedGoodCondition" value="1">
+                    It's an existing bed and I can't see the soil under the mulch.
+                  </label>
+                  <p class="help-block">1 inch</p>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" data-controller-attr="depth" class="recalc" name="mulchDepth" id="existingBedPoorCondition" value="2">
+                    It's an existing bed but I can see patches of soil.
+                  </label>
+                  <p class="help-block">2 inches</p>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+          <h4>How much mulch is in a bag at your local nursery?</h4>
+        </div>
+        <div class="row">
+          <div class="form-group">
+              <div class="col-sm-12">
+                <div class="radio">
+                  <label>
+                    <input type="radio" class="recalc" data-controller-attr="capacity" name="mulchCapacity" id="mulchCubicFeetTwo" value="2">
+                    2 cubic feet
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" class="recalc" data-controller-attr="capacity" name="mulchCapacity" id="mulchCubicFeetThree" value="3">
+                    3 cubic feet
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="mulchCubicFeetOtherValue">
+                    <input type="radio" name="mulchCapacity" id="mulchCubicFeetOther" value="0">
+                    Other
+                  </label>
+                  <div class="input-group col-sm-2">
+                    <input type="text" data-controller-attr="capacity" class="form-control recalc" id="mulchCubicFeetOtherValue">
+                    <span class="input-group-addon">f<sup>3</sup></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <h4 class="center-content">Square yards of sod.</h4>
+          <h1 class="text-success center-content"><span id="squareYardsOfSod">0</span> <small>y<sup>2</sup></small></h1>
+        </div>
+        <div class="col-sm-4">
+          <h4 class="center-content">Cubic yards of mulch.</h4>
+          <h1 class="text-success center-content"><span id="cubicYardsOfMulch">0</span> <small>y<sup>3</sup></small></h1>
+        </div>
+        <div class="col-sm-4">
+          <h4 class="center-content">Bags of mulch.</h4>
+          <h1 class="text-success center-content"><span id="bagsOfMulch">0</span> <small>bags</small></h1>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/plugins.js -->
+    <script src="bower_components/bootstrap/js/affix.js"></script>
+    <script src="bower_components/bootstrap/js/alert.js"></script>
+    <script src="bower_components/bootstrap/js/dropdown.js"></script>
+    <script src="bower_components/bootstrap/js/tooltip.js"></script>
+    <script src="bower_components/bootstrap/js/modal.js"></script>
+    <script src="bower_components/bootstrap/js/transition.js"></script>
+    <script src="bower_components/bootstrap/js/button.js"></script>
+    <script src="bower_components/bootstrap/js/popover.js"></script>
+    <script src="bower_components/bootstrap/js/carousel.js"></script>
+    <script src="bower_components/bootstrap/js/scrollspy.js"></script>
+    <script src="bower_components/bootstrap/js/collapse.js"></script>
+    <script src="bower_components/bootstrap/js/tab.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
