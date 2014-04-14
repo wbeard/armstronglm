@@ -97,6 +97,9 @@ BedPlannerCollection = {
   init: function() {
     this.collection = [];
   },
+  add: function(model) {
+    this.collection.push(model);
+  },
   total: function(prop, asFunction) {
     var total = 0;
     for(item in this.collection) {
@@ -112,3 +115,14 @@ BedPlannerCollection = {
   }
 }
 
+function AppView() {
+  this.events = [
+    {
+      selector: '#addBed',
+      evt: 'click',
+      fn: function(evt) {
+        BedPlannerCollection.
+      }
+    }
+  ];
+}
