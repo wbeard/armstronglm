@@ -1,113 +1,97 @@
-body, html, .jumbotron-full-height {
-	height: 100%;
-	margin-bottom: 0;
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
 }
 
-body.fixed-menu {
-	padding-top: 50px;
+/* Space out content a bit */
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
-@media screen and (max-height: 400px) {
-	.jumbotron-full-height {
-		height: 300px;
-	}
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-@media screen and (min-width: 320px) {
-	.jumbotron-full-height {
-		height: 200px;
-	}
+/* Custom page header */
+.header {
+    border-bottom: 1px solid #e5e5e5;
 }
 
-@media screen and (min-width: 500px) {
-	.jumbotron-full-height {
-		height: 300px;
-	}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
 }
 
-@media screen and (min-width: 700px) {
-	.jumbotron-full-height {
-		height: 400px;
-	}
+/* Custom page footer */
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
 }
 
-@media screen and (min-width: 900px) {
-	.jumbotron-full-height {
-		height: 500px;
-	}
+.container-narrow > hr {
+    margin: 30px 0;
 }
 
-
-@media screen and (min-width: 901px) {
-	.jumbotron-full-height {
-		height: 100%;
-	}
+/* Main marketing message and sign up button */
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-#header {
-	z-index: 4;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	background: #FFF;
-	background: rgba(255, 255, 255, 0.9);
-	background: linear-gradient(top, #FFF, rgba(255, 255, 255, 0.9));
-	background: -webkit-linear-gradient(top, #FFF, rgba(255, 255, 255, 0.9));
-	background: -moz-linear-gradient(top, #FFF, rgba(255, 255, 255, 0.9));
-	background: -o-linear-gradient(top, #FFF, rgba(255, 255, 255, 0.9));
-	background: -ms-linear-gradient(top, #FFF, rgba(255, 255, 255, 0.9));
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
 }
 
-.navbar-default {
-	background-color: transparent;
-	border: 0;
-}
-
-.navbar {
-	margin-bottom: 0;
-}
-
-.navbar-brand {
-	padding: 5px;
-}
-
-.jumbotron-full-height {
-	max-height: 800px;
-	position: relative;
-}
-
-.jumbotron-full-height h1, .jumbotron-full-height p {
-	text-align: center;
-	z-index: 1;
-	position: relative;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-	-o-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-	color: #000;
-	text-shadow: 1px 1px 0px #fff;
-}
-
-.jumbotron-full-height.light h1, .jumbotron-full-height.light p {
-	color: #fff;
-	text-shadow: 0px 0px 15px #555;
-}
-
-.jumbotron-full-height .img-responsive {
-	z-index: 0;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 100%;
-	width: 100%;
-}
-
+/* Supporting marketing content */
 .marketing {
-	margin-top: 30px;
-	margin-bottom: 30px;
+    margin: 40px 0;
+}
+
+.marketing p + h4 {
+    margin-top: 28px;
+}
+
+.center-content {
+    text-align: center;
+}
+
+.pull-content-right {
+    text-align: right;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 30px;
+    }
+
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
 }

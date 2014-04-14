@@ -1,11 +1,9 @@
 {
-  "name": "csipublic",
+  "name": "david",
   "private": true,
   "dependencies": {
-    "sass-bootstrap": "~3.0.0",
-    "modernizr": "~2.6.2",
-    "jquery": "~1.10.2",
-    "bootstrap.css": "~2.3.2"
+    "bootstrap": "~3.0.3",
+    "jquery": "~1.11.0"
   },
   "devDependencies": {}
 }
