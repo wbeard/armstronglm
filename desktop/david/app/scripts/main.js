@@ -1,99 +1,114 @@
-BedPlanner = {
+function BedModel() {
 
-  calculateBags: function() {
-    return this.area * (this.depth/12) / this.capacity;
-  },
+  return {
 
-  calculateCubicYards: function() {
-    return this.area * (this.depth/27);
-  },
+    calculateBags: function() {
+      return this.area * (this.depth/12) / this.capacity;
+    },
 
-  calculateSquareYards: function() {
-    return this.area / 9;
-  },
+    calculateCubicYards: function() {
+      return this.area * (this.depth/27);
+    },
 
-  set: function(key, val) {
-    this[key] = val;
+    calculateSquareYards: function() {
+      return this.area / 9;
+    },
 
-    if(key === "length" || key === "width") {
-      this.area = this.width * this.length;
+    set: function(key, val) {
+      this[key] = val;
+
+      if(key === "length" || key === "width") {
+        this.area = this.width * this.length;
+      }
+
+    },
+
+    get: function(key) {
+      return this[key];
+    },
+
+    hasMinimumCriteria: function(key) {
+      if(key === "bags") {
+        return this.area && this.depth && this.capacity;
+      } else if (key === "cubic") {
+        return this.area && this.depth;
+      } else if (key === "squareYards") {
+        return this.area;
+      }
     }
 
-  },
+  };
 
-  get: function(key) {
-    return this[key];
-  },
+}
 
-  hasMinimumCriteria: function(key) {
-    if(key === "bags") {
-      return this.area && this.depth && this.capacity;
-    } else if (key === "cubic") {
-      return this.area && this.depth;
-    } else if (key === "squareYards") {
-      return this.area;
+function BedPlannerView(model) {
+
+  function roundUp(val) {
+    if(val - parseInt(val) > 0) {
+      return parseInt(val) + 1;
+    } else {
+      return val;
     }
   }
 
-};
+  this.model = model;
 
-BedPlannerController = {
-  init: function() {
-    var Evts = this.events;
-    for(evt in Evts) {
-      $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
-    }
-  },
-  events: [
+  this.render = function(template) {
+    var obj = this.model;
+
+    return template.replace(/\$\{([^\s\:\}]+)\}/g,
+      function(match, key) {
+        var val = obj[key];
+        if(typeof val !== "undefined") {
+          return val;
+        } else {
+          throw new Error("${" + key + "}, which is an expected key in the template, is not a member of the object passed. Please ensure all expected keys are included in the passed object.");
+        }
+      });
+    };
+
+  }
+
+  this.events = [
     {
       selector: '.recalc',
       evt: 'change',
       fn: function(evt) {
-        BedPlanner.set($(evt.target).attr("data-controller-attr"), $(evt.target).val());
-
-        if(BedPlanner.hasMinimumCriteria("bags")) {
-          $("#bagsOfMulch").text(parseInt(roundUp(BedPlanner.calculateBags())));
-        }
-
-        if(BedPlanner.hasMinimumCriteria("cubic")) {
-          $("#cubicYardsOfMulch").text(parseFloat(BedPlanner.calculateCubicYards()).toFixed(2));
-        }
-
-        if(BedPlanner.hasMinimumCriteria("squareYards")) {
-          $("#squareYardsOfSod").text(parseFloat(BedPlanner.calculateSquareYards()).toFixed(2));
-        }
-      }
-    },
-    {
-      selector: '#inputBedArea',
-      evt: 'change',
-      fn: function(evt) {
-        $("#inputBedLength, #inputBedWidth").val('');
-      }
-    },
-    {
-      selector: '#inputBedLength, #inputBedWidth',
-      evt: 'change',
-      fn: function(evt) {
-        $("#inputBedArea").val('');
-      }
-    },
-    {
-      selector: '#mulchCubicFeetOtherValue',
-      evt: 'click',
-      fn: function(evt) {
-        $("#mulchCubicFeetOther").trigger("click");
+        this.model.set($(evt.target).attr("data-controller-attr"), $(evt.target).val());
       }
     }
-  ]
-};
+  ];
 
-BedPlannerController.init();
+  this.init = function() {
+    var Evts = this.events;
+    for(evt in Evts) {
+      $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
+    }
+  };
 
-function roundUp(val) {
-  if(val - parseInt(val) > 0) {
-    return parseInt(val) + 1;
-  } else {
-    return val;
+  this.init();
+
+}
+
+
+BedPlannerCollection = {
+  el: "bedCollection",
+  $el: $(this.domId),
+  init: function() {
+    this.collection = [];
+  },
+  total: function(prop, asFunction) {
+    var total = 0;
+    for(item in this.collection) {
+      if(collection.hasOwnProperty(item) && typeof collection[item] === "number") {
+        if(asFunction) {
+          total += this.collection[item].get[prop]();
+        } else {
+          total += this.collection[item].get[prop];
+        }
+      }
+    }
+    return total;
   }
 }
+
