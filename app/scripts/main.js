@@ -1,48 +1,48 @@
-function BedModel() {
+function BedModel(options) {
 
-  return {
+  this.id = options.id;
 
-    calculateBags: function() {
+  this.calculateBags = function() {
       return this.area * (this.depth/12) / this.capacity;
-    },
+  };
 
-    calculateCubicYards: function() {
-      return this.area * (this.depth/27);
-    },
+  this.calculateCubicYards = function() {
+    return this.area * (this.depth/27);
+  };
 
-    calculateSquareYards: function() {
+  this.calculateSquareYards = function() {
       return this.area / 9;
-    },
+  };
 
-    set: function(key, val) {
-      this[key] = val;
+  this.set= function(key, val) {
+    this[key] = val;
 
-      if(key === "length" || key === "width") {
-        this.area = this.width * this.length;
-      }
-
-    },
-
-    get: function(key) {
-      return this[key];
-    },
-
-    hasMinimumCriteria: function(key) {
-      if(key === "bags") {
-        return this.area && this.depth && this.capacity;
-      } else if (key === "cubic") {
-        return this.area && this.depth;
-      } else if (key === "squareYards") {
-        return this.area;
-      }
+    if(key === "length" || key === "width") {
+      this.area = this.width * this.length;
     }
 
+  };
+
+  this.get = function(key) {
+    return this[key];
+  };
+
+  this.hasMinimumCriteria = function(key) {
+    if(key === "bags") {
+      return this.area && this.depth && this.capacity;
+    } else if (key === "cubic") {
+      return this.area && this.depth;
+    } else if (key === "squareYards") {
+      return this.area;
+    }
   };
 
 }
 
 function BedView(model) {
+
   var outerScope = this;
+
   function roundUp(val) {
     if(val - parseInt(val) > 0) {
       return parseInt(val) + 1;
@@ -57,6 +57,8 @@ function BedView(model) {
 
   this.render = function() {
     var obj = this.model;
+
+    console.log(obj);
 
     return this.template.replace(/\$\{([^\s\:\}]+)\}/g,
       function(match, key) {
@@ -109,19 +111,24 @@ var BedPlannerCollection = function(){
           }
         }
       }
-      return total;
+      return total || 0;
   }
 }
 
 function AppView() {
   var appScope = this;
   this.beds = new BedPlannerCollection();
+  this.$totalBedArea = $("#totalSquareFootage");
+  var bedCounter = 1;
   this.addBed = function(evt) {
-    var newBed = new BedModel(),
-            bedView = new BedView(newBed);
-        appScope.beds.$el.append(bedView.render());
-        bedView.init();
-        appScope.beds.add(newBed);
+    var newBed = new BedModel({
+      id: bedCounter
+    }),
+    bedView = new BedView(newBed);
+    appScope.beds.$el.append(bedView.render());
+    bedView.init();
+    appScope.beds.add(newBed);
+    bedCounter++;
   }
   this.events = [
     {
@@ -130,6 +137,7 @@ function AppView() {
       fn: this.addBed
     }
   ];
+  this.init = function() {
   var Evts = this.events;
   for(evt in Evts) {
     $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
