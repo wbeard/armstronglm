@@ -41,8 +41,8 @@ function BedModel() {
 
 }
 
-function BedPlannerView(model) {
-
+function BedView(model) {
+  var outerScope = this;
   function roundUp(val) {
     if(val - parseInt(val) > 0) {
       return parseInt(val) + 1;
@@ -53,10 +53,12 @@ function BedPlannerView(model) {
 
   this.model = model;
 
-  this.render = function(template) {
+  this.template = $("#bedTemplate").html();
+
+  this.render = function() {
     var obj = this.model;
 
-    return template.replace(/\$\{([^\s\:\}]+)\}/g,
+    return this.template.replace(/\$\{([^\s\:\}]+)\}/g,
       function(match, key) {
         var val = obj[key];
         if(typeof val !== "undefined") {
@@ -65,16 +67,15 @@ function BedPlannerView(model) {
           throw new Error("${" + key + "}, which is an expected key in the template, is not a member of the object passed. Please ensure all expected keys are included in the passed object.");
         }
       });
-    };
 
-  }
+  };
 
   this.events = [
     {
       selector: '.recalc',
       evt: 'change',
       fn: function(evt) {
-        this.model.set($(evt.target).attr("data-controller-attr"), $(evt.target).val());
+        outerScope.model.set($(evt.target).attr("data-controller-attr"), +$(evt.target).val());
       }
     }
   ];
@@ -86,43 +87,54 @@ function BedPlannerView(model) {
     }
   };
 
-  this.init();
-
 }
 
 
-BedPlannerCollection = {
-  el: "bedCollection",
-  $el: $(this.domId),
-  init: function() {
-    this.collection = [];
-  },
-  add: function(model) {
+var BedPlannerCollection = function(){
+  this.el = "bedCollection";
+  this.$el = $("#"+this.el);
+  this.collection = [];
+  this.add = function(model) {
     this.collection.push(model);
-  },
-  total: function(prop, asFunction) {
-    var total = 0;
-    for(item in this.collection) {
-      if(collection.hasOwnProperty(item) && typeof collection[item] === "number") {
-        if(asFunction) {
-          total += this.collection[item].get[prop]();
-        } else {
-          total += this.collection[item].get[prop];
+  };
+  this.total = function(prop, options) {
+    var total = 0,
+        collection = this.collection;
+      for(item in collection) {
+        if(collection.hasOwnProperty(item)) {
+          if(options && options.asFunction) {
+            total += collection[item].get[prop]();
+          } else {
+            total += collection[item][prop];
+          }
         }
       }
-    }
-    return total;
+      return total;
   }
 }
 
 function AppView() {
+  var appScope = this;
+  this.beds = new BedPlannerCollection();
+  this.addBed = function(evt) {
+    var newBed = new BedModel(),
+            bedView = new BedView(newBed);
+        appScope.beds.$el.append(bedView.render());
+        bedView.init();
+        appScope.beds.add(newBed);
+  }
   this.events = [
     {
       selector: '#addBed',
       evt: 'click',
-      fn: function(evt) {
-        BedPlannerCollection.
-      }
+      fn: this.addBed
     }
   ];
+  var Evts = this.events;
+  for(evt in Evts) {
+    $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
+  }
 }
+
+var app = new AppView();
+app.addBed();

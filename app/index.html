@@ -27,39 +27,6 @@
           <h4>What is the the area of your bed?</h4>
         </div>
         <div id="bedCollection">
-          <div class="bed row">
-            <div class="col-sm-6 col-xs-12" style="border-right: 1px solid #ccc;">
-              <div class="form-group">
-                <label class="col-sm-4 control-label">Bed length</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" data-controller-attr="length" class="form-control recalc" />
-                    <span class="input-group-addon">ft.</span>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 control-label">Bed width</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" data-controller-attr="width" class="form-control recalc" />
-                    <span class="input-group-addon">ft.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-              <div class="form-group">
-                <label class="col-sm-4 control-label">Bed area</label>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <input type="text" data-controller-attr="area" class="form-control recalc" />
-                    <span class="input-group-addon">ft<sup>2</sup></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="row">
           <div class="col-sm-6 col-xs-12">
@@ -127,6 +94,41 @@
     <!-- endbuild -->
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script id="bedTemplate" type="text/template">
+    <div class="bed row">
+      <div class="col-sm-6 col-xs-12" style="border-right: 1px solid #ccc;">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Bed length</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" data-controller-attr="length" class="form-control recalc" />
+              <span class="input-group-addon">ft.</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Bed width</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" data-controller-attr="width" class="form-control recalc" />
+              <span class="input-group-addon">ft.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xs-12">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Bed area</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input type="text" data-controller-attr="area" class="form-control recalc" />
+              <span class="input-group-addon">ft<sup>2</sup></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
   </body>
