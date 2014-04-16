@@ -1,6 +1,14 @@
+function proxy(func, thisObject) {
+  return(function() {
+    return func.apply(thisObject, arguments);
+  });
+}
+
 function BedModel(options) {
 
   this.id = options.id;
+
+  this.listeners = {};
 
   this.calculateBags = function() {
       return this.area * (this.depth/12) / this.capacity;
@@ -14,12 +22,14 @@ function BedModel(options) {
       return this.area / 9;
   };
 
-  this.set= function(key, val) {
+  this.set = function(key, val) {
     this[key] = val;
 
     if(key === "length" || key === "width") {
       this.area = this.width * this.length;
     }
+
+    this.publish("set");
 
   };
 
@@ -39,9 +49,23 @@ function BedModel(options) {
 
 }
 
-function BedView(model) {
+BedModel.prototype.subscribe = function(scope, channel, callback) {
+  (this.listeners[channel] || (this.listeners[channel] = [])).push({
+    "scope": scope,
+    "fn": callback
+  });
+};
 
-  var outerScope = this;
+BedModel.prototype.publish = function(channel, data) {
+  var subscribers = this.listeners[channel];
+  for(var key in subscribers) {
+    if(subscribers.hasOwnProperty(key)) {
+      subscribers[key].fn.apply(subscribers[key].scope, data || {});
+    }
+  }
+};
+
+function BedView(model) {
 
   function roundUp(val) {
     if(val - parseInt(val) > 0) {
@@ -57,8 +81,6 @@ function BedView(model) {
 
   this.render = function() {
     var obj = this.model;
-
-    console.log(obj);
 
     return this.template.replace(/\$\{([^\s\:\}]+)\}/g,
       function(match, key) {
@@ -77,7 +99,7 @@ function BedView(model) {
       selector: '.recalc',
       evt: 'change',
       fn: function(evt) {
-        outerScope.model.set($(evt.target).attr("data-controller-attr"), +$(evt.target).val());
+        this.model.set($(evt.target).attr("data-controller-attr"), +$(evt.target).val());
       }
     }
   ];
@@ -85,7 +107,7 @@ function BedView(model) {
   this.init = function() {
     var Evts = this.events;
     for(evt in Evts) {
-      $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
+      $(Evts[evt].selector).on(Evts[evt].evt, proxy(Evts[evt].fn, this));
     }
   };
 
@@ -96,8 +118,12 @@ var BedPlannerCollection = function(){
   this.el = "bedCollection";
   this.$el = $("#"+this.el);
   this.collection = [];
+  this.$totalBedArea = $("#totalSquareFootage");
   this.add = function(model) {
     this.collection.push(model);
+    model.subscribe(this, "set", function() {
+      this.$totalBedArea.text(this.total("area"));
+    });
   };
   this.total = function(prop, options) {
     var total = 0,
@@ -113,21 +139,20 @@ var BedPlannerCollection = function(){
       }
       return total || 0;
   }
-}
+};
 
 function AppView() {
-  var appScope = this;
   this.beds = new BedPlannerCollection();
-  this.$totalBedArea = $("#totalSquareFootage");
   var bedCounter = 1;
   this.addBed = function(evt) {
     var newBed = new BedModel({
       id: bedCounter
     }),
     bedView = new BedView(newBed);
-    appScope.beds.$el.append(bedView.render());
+
+    this.beds.$el.append(bedView.render());
     bedView.init();
-    appScope.beds.add(newBed);
+    this.beds.add(newBed);
     bedCounter++;
   }
   this.events = [
@@ -137,10 +162,9 @@ function AppView() {
       fn: this.addBed
     }
   ];
-  this.init = function() {
   var Evts = this.events;
   for(evt in Evts) {
-    $(Evts[evt].selector).on(Evts[evt].evt, Evts[evt].fn);
+    $(Evts[evt].selector).on(Evts[evt].evt, proxy(Evts[evt].fn, this));
   }
 }
 

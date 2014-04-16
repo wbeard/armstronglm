@@ -44,7 +44,7 @@
             <p class="help-block"><strong>Note</strong>: Regular shape beds, devide the beds into smaller square or rectangle areas and insert L X W dimensions above.</p>
           </div>
           <div class="col-sm-6 col-xs-12 center-content">
-            <img src="http://placehold.it/100/100" class="img-rounded" />
+            <img src="http://placehold.it/300x65" class="img-rounded" />
           </div>
         </div>
         <br />
@@ -53,7 +53,7 @@
             <p class="help-block"><strong>Note</strong>: To measure irregular areas, take the average measurement of the curved area to create a square or rectangular area.</p>
           </div>
           <div class="col-sm-6 col-xs-12 center-content">
-            <img src="http://placehold.it/100/100" class="img-rounded" />
+            <img src="http://placehold.it/300x65" class="img-rounded" />
           </div>
         </div>
         <div class="row">
@@ -88,19 +88,7 @@
             </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-4">
-          <h4 class="center-content">Square yards of sod.</h4>
-          <h1 class="text-success center-content"><span id="squareYardsOfSod">0</span> <small>y<sup>2</sup></small></h1>
-        </div>
-        <div class="col-sm-4">
-          <h4 class="center-content">Cubic yards of mulch.</h4>
-          <h1 class="text-success center-content"><span id="cubicYardsOfMulch">0</span> <small>y<sup>3</sup></small></h1>
-        </div>
-        <div class="col-sm-4">
-          <h4 class="center-content">Bags of mulch.</h4>
-          <h1 class="text-success center-content"><span id="bagsOfMulch">0</span> <small>bags</small></h1>
-        </div>
+      <div id="results">
       </div>
     </div>
 
@@ -116,40 +104,68 @@
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script id="bedTemplate" type="text/template">
-    <h4>Bed Area ${id}</h4>
-    <div class="bed row">
-      <div class="col-sm-6 col-xs-12" style="border-right: 1px solid #ccc;">
-        <div class="form-group">
-          <label class="col-sm-4 control-label">Bed length</label>
-          <div class="col-sm-8">
-            <div class="input-group">
-              <input type="text" data-controller-attr="length" class="form-control recalc" />
-              <span class="input-group-addon">ft.</span>
+      <h4>Bed Area ${id}</h4>
+      <div class="bed row">
+        <div class="col-sm-6 col-xs-12" style="border-right: 1px solid #ccc;">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Bed length</label>
+            <div class="col-sm-8">
+              <div class="input-group">
+                <input type="text" data-controller-attr="length" class="form-control recalc" />
+                <span class="input-group-addon">ft.</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Bed width</label>
+            <div class="col-sm-8">
+              <div class="input-group">
+                <input type="text" data-controller-attr="width" class="form-control recalc" />
+                <span class="input-group-addon">ft.</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-sm-4 control-label">Bed width</label>
-          <div class="col-sm-8">
-            <div class="input-group">
-              <input type="text" data-controller-attr="width" class="form-control recalc" />
-              <span class="input-group-addon">ft.</span>
+        <div class="col-sm-6 col-xs-12">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Bed area</label>
+            <div class="col-sm-8">
+              <div class="input-group">
+                <input type="text" data-controller-attr="area" class="form-control recalc" />
+                <span class="input-group-addon">SF</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-xs-12">
-        <div class="form-group">
-          <label class="col-sm-4 control-label">Bed area</label>
-          <div class="col-sm-8">
-            <div class="input-group">
-              <input type="text" data-controller-attr="area" class="form-control recalc" />
-              <span class="input-group-addon">SF</span>
-            </div>
-          </div>
+    </script>
+    <script id="resultsTemplate" type="text/template">
+      <div class="row">
+        <div class="col-sm-6">
+          <h4 class="center-content">Square yards of sod.</h4>
+          <h1 class="text-success center-content"><span id="squareYardsOfSod">0</span> <small>SY</small></h1>
+        </div>
+        <div class="col-sm-6">
+          <h4 class="center-content">Cubic yards of mulch.</h4>
+          <h1 class="text-success center-content"><span id="cubicYardsOfMulch">0</span> <small>CY</small></h1>
         </div>
       </div>
-    </div>
+      <div class="row"
+        <div class="col-sm-6">
+          <h4 class="center-content">2 CF Bags of mulch.</h4>
+          <h1 class="text-success center-content"><span id="twoBagsOfMulch">0</span> <small>bags</small></h1>
+        </div>
+        <div class="col-sm-6">
+          <h4 class="center-content">3 CF Bags of mulch.</h4>
+          <h1 class="text-success center-content"><span id="threeBagsOfMulch">0</span> <small>bags</small></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="center-content">Pallets of sod</h4>
+          <h1 class="text-success center-content"><span id="threeBagsOfMulch">0</span> <small>pallets</small></h1>
+        </div>
+      </div>
     </script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
