@@ -6,13 +6,13 @@ function proxy(func, thisObject) {
 
 function BedModel(options) {
 
+  var calculateBags = function(capacity) {
+      return this.area * (this.depth/12) / capacity;
+  };
+
   this.id = options.id;
 
   this.listeners = {};
-
-  this.calculateBags = function() {
-      return this.area * (this.depth/12) / this.capacity;
-  };
 
   this.calculateCubicYards = function() {
     return this.area * (this.depth/27);
@@ -21,6 +21,10 @@ function BedModel(options) {
   this.calculateSquareYards = function() {
       return this.area / 9;
   };
+
+  this.twoBags = calculateBags(2);
+
+  this.threeBags = calculateBags(3);
 
   this.set = function(key, val) {
     this[key] = val;
@@ -86,7 +90,11 @@ function BedView(model) {
       function(match, key) {
         var val = obj[key];
         if(typeof val !== "undefined") {
-          return val;
+          if(typeof val === "function") {
+            return val();
+          } else {
+            return val;
+          }
         } else {
           throw new Error("${" + key + "}, which is an expected key in the template, is not a member of the object passed. Please ensure all expected keys are included in the passed object.");
         }
@@ -94,25 +102,22 @@ function BedView(model) {
 
   };
 
-  this.events = [
-    {
-      selector: '.recalc',
-      evt: 'change',
-      fn: function(evt) {
-        this.model.set($(evt.target).attr("data-controller-attr"), +$(evt.target).val());
-      }
+  this.events = {
+    '.recalc change': function(evt) {
+      this.model.set($(evt.target).attr("data-controller-attr"), +$(evt.target).val());
     }
-  ];
+  };
 
   this.init = function() {
     var Evts = this.events;
     for(evt in Evts) {
-      $(Evts[evt].selector).on(Evts[evt].evt, proxy(Evts[evt].fn, this));
+      var selector = evt.split(' ')[0],
+          event = evt.split(' ')[1];
+      $(selector).on(event, proxy(Evts[evt], this));
     }
   };
 
 }
-
 
 var BedPlannerCollection = function(){
   this.el = "bedCollection";
@@ -155,16 +160,14 @@ function AppView() {
     this.beds.add(newBed);
     bedCounter++;
   }
-  this.events = [
-    {
-      selector: '#addBed',
-      evt: 'click',
-      fn: this.addBed
-    }
-  ];
+  this.events = {
+    '#addBed click': this.addBed
+  };
   var Evts = this.events;
   for(evt in Evts) {
-    $(Evts[evt].selector).on(Evts[evt].evt, proxy(Evts[evt].fn, this));
+    var selector = evt.split(' ')[0],
+        event = evt.split(' ')[1];
+    $(selector).on(event, proxy(Evts[evt], this));
   }
 }
 
